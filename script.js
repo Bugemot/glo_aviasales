@@ -31,9 +31,9 @@ const getData = (url, callback) => {
   });
 
   request.send();
-}
+};
 
-//Фильтр городов в зависимости от ввода пользователя
+  //Фильтр городов в зависимости от ввода пользователя
 const showCity = (input, list) => {
   list.textContent = '';
     //Проверка, пустой ли инпут, если да, функция не выполняется
@@ -60,6 +60,27 @@ const selectCity = (event, input, list) => {
     input.value = target.textContent;
     list.textContent = '';
   }
+};
+  //Фильтр по лучшей цене
+const renderCheapDay = (cheapTicket) => {
+  console.log(cheapTicket);
+  
+}
+
+const renderCheapYear = (cheapTickets) => {
+  console.log(cheapTickets);
+  
+}
+
+const renderCheap = (data, date) => {
+  const cheapTicketYear = JSON.parse(data).best_prices;
+  
+  const cheapTicketDay = cheapTicketYear.filter((item) => {
+    return item.depart_date === date;
+  });
+
+  renderCheapDay(cheapTicketDay);
+  renderCheapYear(cheapTicketYear); 
 }
 
 //Обработчики событий
@@ -79,6 +100,32 @@ dropdownCitiesFrom.addEventListener('click', (event) => {
 
 dropdownCitiesTo.addEventListener('click', (event) => {
   selectCity(event, inputCitiesTo, dropdownCitiesTo);
+});
+
+//Получаем значения из API
+formSearch.addEventListener('submit', (event) => {
+  
+  //Запрещаем браузеру перезагружаться
+  event.preventDefault();
+  
+  //Забираем города отправления и прибытия из массива по городам
+  const cityFrom = city.find((item) => inputCitiesFrom.value === item.name),
+        cityTo = city.find((item) => inputCitiesTo.value === item.name);
+  
+        //Формируем объект с данными для запроса
+  const formData = {
+    from: cityFrom.code,
+    to: cityTo.code,
+    when: inputDateDepart.value,
+  };
+  
+  //Создаём строку, которую требуется добавить к запросу
+  const requestData = `?depart_date=${formData.when}&origin=${formData.from}&destination=${formData.to}&one_way=true&token=${API_KEY}`;
+  
+  //Делаем запрос
+  getData(PROXY + CALENDAR + requestData, (response) =>{
+    renderCheap(response, formData.when);    
+  });
 });
 
 //Вызовы функций
