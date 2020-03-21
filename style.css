@@ -221,6 +221,7 @@ input {
 }
 
 .ticket {
+  display: flex;
   width: 100%;
   max-width: 730px;
   margin: 30px auto;
@@ -229,7 +230,11 @@ input {
   box-shadow: 0 1px 5px rgba(0, 0, 0, .15);
   background-color: #1e3c53;
 }
-
+.ticket img{
+  width: 60%;
+  margin: 0 auto;
+  opacity: 0.4;
+}
 .ticket__wrapper {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -264,9 +269,12 @@ input {
   font-size: 18px;
   font-weight: 600;
 }
-
+.wrapper__ticket{
+  display: none;
+}
 .block__ticket {
   margin: 50px 0;
+  display: none;
 }
 
 @media(max-width: 768px) {
